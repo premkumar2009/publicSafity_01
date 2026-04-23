@@ -1,0 +1,61 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+import "./styles.css";
+
+const apPoliceFavicon = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Andhra Pradesh Police logo">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff1b3" />
+      <stop offset="55%" stop-color="#d6aa3a" />
+      <stop offset="100%" stop-color="#9f7218" />
+    </linearGradient>
+    <linearGradient id="wingPurple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#5f3aa8" />
+      <stop offset="100%" stop-color="#2e1764" />
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" fill="#ffffff" />
+  <g transform="translate(128 128)">
+    <path d="M0-106c44 0 72 26 72 56 0 69-33 118-72 148-39-30-72-79-72-148 0-30 28-56 72-56Z" fill="#060606" />
+    <path d="M0-98c37 0 60 22 60 47 0 59-28 103-60 128-32-25-60-69-60-128 0-25 23-47 60-47Z" fill="#0b0b0b" />
+    <path d="M-94-10C-126-16-150-34-164-60c25 0 50 10 76 31-3 5-4 10-6 19Z" fill="url(#wingPurple)" stroke="#d7b24f" stroke-width="4" stroke-linejoin="round" />
+    <path d="M94-10C126-16 150-34 164-60c-25 0-50 10-76 31 3 5 4 10 6 19Z" fill="url(#wingPurple)" stroke="#d7b24f" stroke-width="4" stroke-linejoin="round" />
+    <path d="M-84 0C-111-6-131-18-145-37c22 2 43 10 62 24-2 4-1 8-1 13Z" fill="#7d58c6" opacity="0.95" />
+    <path d="M84 0C111-6 131-18 145-37c-22 2-43 10-62 24 2 4 1 8 1 13Z" fill="#7d58c6" opacity="0.95" />
+    <path d="M0-90l9 20 21 2-16 13 5 21-19-11-19 11 5-21-16-13 21-2Z" fill="url(#gold)" />
+    <circle cx="0" cy="-72" r="14" fill="#e4b53a" />
+    <path d="M0-72l10 9h-5l2 13-7-8-7 8 2-13h-5Z" fill="#fff4c4" />
+    <circle cx="0" cy="-8" r="35" fill="#b51f24" stroke="url(#gold)" stroke-width="6" />
+    <path d="M-14-24l4-6h20l4 6-7 10v13l-7 4-7-4V-14Z" fill="#f4f4f4" opacity="0.95" />
+    <rect x="-32" y="-19" width="64" height="46" rx="10" fill="#f5f2ec" stroke="#d3ac46" stroke-width="4" />
+    <text x="0" y="11" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700" fill="#3a2b68">AP</text>
+    <path d="M-44 46c13-11 28-16 44-16s31 5 44 16" fill="none" stroke="url(#gold)" stroke-width="6" stroke-linecap="round" />
+    <path d="M-56 58c17 7 35 10 56 10s39-3 56-10" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.3" />
+    <text x="0" y="94" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="4" fill="#ffffff">POLICE</text>
+  </g>
+</svg>`;
+
+const faviconLink = document.querySelector('link[rel="icon"]') || document.createElement("link");
+faviconLink.rel = "icon";
+faviconLink.type = "image/svg+xml";
+faviconLink.href = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(apPoliceFavicon)}`;
+document.head.appendChild(faviconLink);
+
+const shortcutIconLink = document.querySelector('link[rel="shortcut icon"]') || document.createElement("link");
+shortcutIconLink.rel = "shortcut icon";
+shortcutIconLink.type = "image/svg+xml";
+shortcutIconLink.href = faviconLink.href;
+document.head.appendChild(shortcutIconLink);
+
+document.title = "AP Police | Public Safety Alert System";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>
+);

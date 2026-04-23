@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: public-safety-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-publicsafetydb}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-publicsafetydb}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: public-safety-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-publicsafetydb}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PUBLIC_SAFETY_POLICE_ACCESS_CODE: ${PUBLIC_SAFETY_POLICE_ACCESS_CODE:-POLICE-2026}
+      PUBLIC_SAFETY_JWT_SECRET: ${PUBLIC_SAFETY_JWT_SECRET:-change-this-secret-before-production}
+      BOOTSTRAP_POLICE_EMAIL: ${BOOTSTRAP_POLICE_EMAIL:-officer@police.local}
+      BOOTSTRAP_POLICE_PASSWORD: ${BOOTSTRAP_POLICE_PASSWORD:-Police@123}
+      BOOTSTRAP_POLICE_NAME: ${BOOTSTRAP_POLICE_NAME:-Officer Demo}
+      BOOTSTRAP_POLICE_PHONE: ${BOOTSTRAP_POLICE_PHONE:-1000000000}
+      BOOTSTRAP_POLICE_BADGE: ${BOOTSTRAP_POLICE_BADGE:-PS-001}
+
+  frontend:
+    build: ./frontend
+    container_name: public-safety-frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+  receiver-frontend:
+    build: ./receiver-frontend
+    container_name: public-safety-receiver-frontend
+    depends_on:
+      - backend
+    ports:
+      - "5174:80"
+
+volumes:
+  postgres-data:
