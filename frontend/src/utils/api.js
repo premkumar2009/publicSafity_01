@@ -1,12 +1,14 @@
 import { getAuthToken } from "./auth";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 async function request(path, options = {}) {
   const headers = { ...(options.headers || {}) };
   const token = getAuthToken();
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
-  const response = await fetch(path, { ...options, headers });
+  const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
   if (!response.ok) {
     let message = "Request failed";
     try {

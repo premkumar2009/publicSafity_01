@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
 
-    @Value("${app.cors.allowed-origin-patterns:*}")
+    @Value("${app.cors.allowed-origins:*}")
     private String allowedOriginPatterns;
 
     public WebConfig(AuthInterceptor authInterceptor) {

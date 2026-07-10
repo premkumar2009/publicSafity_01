@@ -13,19 +13,19 @@ public class BootstrapDataService {
     private final PoliceRepo policeRepo;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    @Value("${BOOTSTRAP_POLICE_EMAIL:officer@police.local}")
+    @Value("${BOOTSTRAP_POLICE_EMAIL}")
     private String bootstrapEmail;
 
-    @Value("${BOOTSTRAP_POLICE_PASSWORD:Police@123}")
+    @Value("${BOOTSTRAP_POLICE_PASSWORD}")
     private String bootstrapPassword;
 
-    @Value("${BOOTSTRAP_POLICE_NAME:Officer Demo}")
+    @Value("${BOOTSTRAP_POLICE_NAME}")
     private String bootstrapName;
 
-    @Value("${BOOTSTRAP_POLICE_PHONE:1000000000}")
+    @Value("${BOOTSTRAP_POLICE_PHONE}")
     private String bootstrapPhone;
 
-    @Value("${BOOTSTRAP_POLICE_BADGE:PS-001}")
+    @Value("${BOOTSTRAP_POLICE_BADGE}")
     private String bootstrapBadge;
 
     public BootstrapDataService(PoliceRepo policeRepo, BCryptPasswordEncoder passwordEncoder) {

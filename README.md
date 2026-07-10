@@ -93,9 +93,67 @@ SELECT id, storage_key, original_file_name, content_type, file_size_bytes FROM a
 5. New matching alerts trigger browser notifications with image
 6. Public can open the alert details page and tap the call button
 
-## Deployment notes
+## Render deployment
 
-- Replace the JWT secret in production
-- Replace default police account credentials in production
-- Use HTTPS in production so browser geolocation/notifications work reliably
-- Image data is stored in PostgreSQL, so keep the `postgres-data` volume persistent
+### Backend service
+
+1. Create a new Web Service on Render.
+2. Connect this repository and select the backend folder as the root service directory.
+3. Use the following build and start commands:
+
+```bash
+mvn -DskipTests package
+java -jar target/*.jar
+```
+
+4. Add these environment variables in Render:
+
+```bash
+SPRING_DATASOURCE_URL=jdbc:postgresql://<host>:5432/<database>
+SPRING_DATASOURCE_USERNAME=<db-user>
+SPRING_DATASOURCE_PASSWORD=<db-password>
+PUBLIC_SAFETY_JWT_SECRET=<long-random-secret>
+PUBLIC_SAFETY_POLICE_ACCESS_CODE=POLICE-2026
+BOOTSTRAP_POLICE_EMAIL=officer@police.local
+BOOTSTRAP_POLICE_PASSWORD=Police@123
+BOOTSTRAP_POLICE_NAME=Officer Demo
+BOOTSTRAP_POLICE_PHONE=1000000000
+BOOTSTRAP_POLICE_BADGE=PS-001
+APP_CORS_ALLOWED_ORIGINS=https://your-frontend-url.onrender.com
+```
+
+5. Render will inject `PORT` automatically; the application is configured to use it.
+
+### Frontend service
+
+1. Create a separate Static Site or Web Service for the frontend.
+2. Set the build command for the frontend folder:
+
+```bash
+npm install
+npm run build
+```
+
+3. Set the environment variable:
+
+```bash
+VITE_API_URL=https://your-backend-url.onrender.com
+```
+
+### Local validation
+
+Run the backend with the required environment variables:
+
+```bash
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/publicsafetydb \
+SPRING_DATASOURCE_USERNAME=postgres \
+SPRING_DATASOURCE_PASSWORD=postgres \
+PUBLIC_SAFETY_JWT_SECRET=replace-with-a-strong-secret \
+mvn spring-boot:run
+```
+
+### Deployment notes
+
+- Use HTTPS in production so browser geolocation and notifications work reliably.
+- Replace the default admin credentials and JWT secret before going live.
+- Image data is stored in PostgreSQL, so keep the database persistent.
